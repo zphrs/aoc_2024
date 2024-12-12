@@ -1,1 +1,0 @@
-cargo generate --path ./template --name day$1 && cd day$1 && ./init.sh

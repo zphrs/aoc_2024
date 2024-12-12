@@ -1,0 +1,2 @@
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cargo generate --path "$SCRIPT_DIR/template" --name day$1 && cd day$1 && ./init.sh
