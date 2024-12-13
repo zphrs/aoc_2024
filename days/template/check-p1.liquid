@@ -33,7 +33,7 @@ fi
 echo "$v\n"'
 eval "$script";
 
-aoc download -d 2 --overwrite;
+aoc download -d {{day}} --overwrite;
 
 echo '
 if [ $# -ne 1 ] || [ $1 = "--help" ];
