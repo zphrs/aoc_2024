@@ -1,0 +1,33 @@
+v=$(aoc submit -qd 2 1 $1);
+
+script='
+if [ $? -ne 0 ];
+then
+exit 1;
+fi
+echo "$v" | grep "not the right answer" > /dev/null;
+wrongAnswer=$?;
+echo "$v" | grep "You gave an answer too recently" > /dev/null;
+tooRecent=$?;
+echo "$v" | grep "seem to be solving the right level." > /dev/null;
+alreadyCompleted=$?;
+if [ $wrongAnswer -eq 0 ];
+then
+    echo "$v\n";
+    exit 1;
+elif [ $tooRecent -eq 0 ]; 
+then
+    echo "$v\n";
+    exit 1;
+elif [ $alreadyCompleted -eq 0 ]; 
+then
+    echo "$v\n";
+    exit 1;
+fi
+echo "$v\n"'
+eval "$script";
+
+
+aoc download -d 2 --overwrite;
+echo "aoc submit -d 2 2 \$1" >> check-p2;
+echo $script >> check-p2;

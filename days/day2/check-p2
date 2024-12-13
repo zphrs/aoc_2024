@@ -1,0 +1,32 @@
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+script
+aoc submit -d 2 2 $1
+if [ \$? -ne 0 ]; then exit 1; fi echo "\$v" | grep "not the right answer" > /dev/null; wrongAnswer=\$?; echo "\$v" | grep "You gave an answer too recently" > /dev/null; tooRecent=\$?; echo "\$v" | grep "seem to be solving the right level." > /dev/null; alreadyCompleted=\$?; if [ \$wrongAnswer -eq 0 ]; then echo "\$v
+"; exit 1; elif [ \$tooRecent -eq 0 ]; then echo "\$v
+"; exit 1; elif [ \$alreadyCompleted -eq 0 ]; then echo "\$v
+"; exit 1; fi echo "\$v
+"
+aoc submit -d 2 2 $1
+if [ \$? -ne 0 ]; then exit 1; fi echo "\$v" | grep "not the right answer" > /dev/null; wrongAnswer=\$?; echo "\$v" | grep "You gave an answer too recently" > /dev/null; tooRecent=\$?; echo "\$v" | grep "seem to be solving the right level." > /dev/null; alreadyCompleted=\$?; if [ \$wrongAnswer -eq 0 ]; then echo "\$v
+"; exit 1; elif [ \$tooRecent -eq 0 ]; then echo "\$v
+"; exit 1; elif [ \$alreadyCompleted -eq 0 ]; then echo "\$v
+"; exit 1; fi echo "\$v
+"
+aoc submit -d 2 2 $1
+if [ $? -ne 0 ]; then exit 1; fi echo "$v" | grep "not the right answer" > /dev/null; wrongAnswer=$?; echo "$v" | grep "You gave an answer too recently" > /dev/null; tooRecent=$?; echo "$v" | grep "seem to be solving the right level." > /dev/null; alreadyCompleted=$?; if [ $wrongAnswer -eq 0 ]; then echo "$v
+"; exit 1; elif [ $tooRecent -eq 0 ]; then echo "$v
+"; exit 1; elif [ $alreadyCompleted -eq 0 ]; then echo "$v
+"; exit 1; fi echo "$v
+"

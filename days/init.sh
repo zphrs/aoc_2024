@@ -13,3 +13,4 @@ read -n 128 -p "Paste your Advent of Code session cookie here: " -s varcookie
 echo "$varcookie" > "$SCRIPT_DIR/.adventofcode.session"
 chmod +x "$SCRIPT_DIR/day"
 chmod +x "$SCRIPT_DIR/template/init.sh"
+chmod +x "$SCRIPT_DIR/template/submit.liquid"
