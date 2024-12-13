@@ -38,8 +38,8 @@ aoc download -d {{day}} --overwrite;
 echo '
 if [ $# -ne 1 ] || [ $1 = "--help" ];
 then
-echo "Usage: \n$ ./check-p1 answer";
+echo "Usage: \n$ ./check-p2 answer";
 exit 1;
-fi' >> check-p2;
-echo "aoc submit -d {{day}} 2 \$1" >> check-p2;
-echo $script >> check-p2;
+fi' > check-p2;
+echo '$script' > check-p2;
+echo "v=$(aoc submit -d {{day}} 2 \$1)" > check-p2;

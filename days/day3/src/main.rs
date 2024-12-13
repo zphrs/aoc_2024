@@ -10,15 +10,21 @@ use std::sync::OnceLock;
 use anyhow::anyhow;
 use regex::Regex;
 
-struct Instruction(u16, u16);
+struct SumInstruction(u16, u16);
 
-impl Instruction {
+enum Instruction {
+    Sum(SumInstruction),
+    Do,
+    Dont,
+}
+
+impl SumInstruction {
     pub fn evaluate(&self) -> u32 {
         (self.0 as u32) * (self.1 as u32)
     }
 }
 
-static EXPR_REGEX: OnceLock<Regex> = OnceLock::new();
+static INSTR_REGEX: OnceLock<Regex> = OnceLock::new();
 
 impl TryFrom<regex::Captures<'_>> for Instruction {
     type Error = anyhow::Error;
@@ -26,25 +32,36 @@ impl TryFrom<regex::Captures<'_>> for Instruction {
     fn try_from(
         value: regex::Captures<'_>,
     ) -> Result<Self, Self::Error> {
+        let cmd = value.get(1).ok_or(anyhow!("Missing command."))?;
+        if cmd.as_str() == "don't" {
+            return Ok(Self::Dont);
+        }
+        if cmd.as_str() == "do" {
+            return Ok(Self::Do);
+        }
         let n1 = value
-            .get(1)
+            .get(2)
             .ok_or(anyhow!("Missing first number in mul."))?;
         let n2 = value
-            .get(2)
+            .get(3)
             .ok_or(anyhow!("Missing second number in mul."))?;
 
-        Ok(Self(n1.as_str().parse()?, n2.as_str().parse()?))
+        Ok(Self::Sum(SumInstruction(
+            n1.as_str().parse()?,
+            n2.as_str().parse()?,
+        )))
     }
 }
 
+#[derive(Default)]
 struct InstructionSet(Vec<Instruction>);
 
 impl FromStr for InstructionSet {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let regexp = EXPR_REGEX.get_or_init(|| {
-            Regex::new(r"mul\(([0-9]+),([0-9]+)\)")
+        let regexp = INSTR_REGEX.get_or_init(|| {
+            Regex::new(r"(?:(mul|don't|do)\(([0-9]+)?,?([0-9]+)?\))")
                 .expect("Should be a valid regex")
         });
         let iter = regexp.captures_iter(s);
@@ -55,8 +72,29 @@ impl FromStr for InstructionSet {
 }
 
 impl InstructionSet {
-    pub fn evaluate(&self) -> u64 {
-        self.0.iter().fold(0, |s, f| s + f.evaluate() as u64)
+    pub fn evaluate(&self, ignore_dos: bool) -> u64 {
+        let mut sum = 0u64;
+        let mut on = true;
+        for instr in self.0.iter() {
+            match instr {
+                Instruction::Sum(sum_instruction) => {
+                    if on || ignore_dos {
+                        sum += sum_instruction.evaluate() as u64;
+                    }
+                }
+                Instruction::Do => {
+                    on = true;
+                }
+                Instruction::Dont => {
+                    on = false;
+                }
+            }
+        }
+        sum
+    }
+
+    pub fn append(&mut self, mut other: Self) {
+        self.0.append(&mut other.0);
     }
 }
 
@@ -69,7 +107,7 @@ pub fn part1_solution(
     let mut sum = 0u64;
     for line in lines {
         let set: InstructionSet = line.parse().unwrap();
-        sum += set.evaluate();
+        sum += set.evaluate(true);
     }
     sum
 }
@@ -80,7 +118,12 @@ pub fn part2_solution(
         impl FnMut(Result<String, io::Error>) -> String,
     >,
 ) -> impl Display {
-    "todo"
+    let set: InstructionSet =
+        lines.fold(Default::default(), |mut prev, line| {
+            prev.append(line.parse().unwrap());
+            prev
+        });
+    set.evaluate(false)
 }
 
 fn main() {
