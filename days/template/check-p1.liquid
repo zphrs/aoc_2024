@@ -40,6 +40,8 @@ if [ $# -ne 1 ] || [ $1 = "--help" ];
 then
 echo "Usage: \n$ ./check-p2 answer";
 exit 1;
-fi' > check-p2;
-echo '$script' > check-p2;
-echo "v=$(aoc submit -d {{day}} 2 \$1)" > check-p2;
+fi' > ./check-p2;
+echo "v=\$(aoc submit -d {{day}} 2 \$1)" >> ./check-p2;
+echo "$script" >> ./check-p2;
+echo "aoc download -d {{day}} --overwrite;" >> ./check-p2;
+chmod +x ./check-p2;

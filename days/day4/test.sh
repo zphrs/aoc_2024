@@ -19,19 +19,19 @@ echo "$v" | grep "seem to be solving the right level." > /dev/null;
 alreadyCompleted=$?;
 if [ $wrongAnswer -eq 0 ];
 then
-    echo "$v\n";
+    echo "$v\\n";
     exit 1;
 elif [ $tooRecent -eq 0 ]; 
 then
-    echo "$v\n";
+    echo "$v\\n";
     exit 1;
 elif [ $alreadyCompleted -eq 0 ]; 
 then
-    echo "$v\n";
+    echo "$v\\n";
     exit 1;
 fi
-echo "$v\n"'
-eval "$script";
+echo "$v\\n"'
+# eval "$script";
 
 aoc download -d 4 --overwrite;
 
