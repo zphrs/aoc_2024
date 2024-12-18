@@ -90,7 +90,11 @@ where
         Self::DiffTooBig(pair.0, pair.1)
     }
 
-    pub fn pyramid(left: Element<T>, middle: Element<T>, right: Element<T>) -> Self {
+    pub fn pyramid(
+        left: Element<T>,
+        middle: Element<T>,
+        right: Element<T>,
+    ) -> Self {
         Self::Pyramid(left, middle, right)
     }
 }
@@ -170,7 +174,8 @@ impl FromStr for Report {
     type Err = ParseIntError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let inner: Result<Vec<u8>, _> = s.split(' ').map(|s| s.parse()).collect();
+        let inner: Result<Vec<u8>, _> =
+            s.split(' ').map(|s| s.parse()).collect();
         Ok(Self(inner?))
     }
 }
