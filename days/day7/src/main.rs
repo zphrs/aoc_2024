@@ -3,15 +3,11 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader, Lines};
 use std::iter::Map;
 
-pub fn part1_solution(
-    lines: Map<Lines<BufReader<File>>, impl FnMut(Result<String, io::Error>) -> String>,
-) -> impl Display {
+pub fn part1_solution(lines: impl Iterator<Item = String>) -> impl Display {
     "todo"
 }
 
-pub fn part2_solution(
-    lines: Map<Lines<BufReader<File>>, impl FnMut(Result<String, io::Error>) -> String>,
-) -> impl Display {
+pub fn part2_solution(lines: impl Iterator<Item = String>) -> impl Display {
     "todo"
 }
 
