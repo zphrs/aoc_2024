@@ -4,9 +4,7 @@ mod position;
 use std::collections::{HashMap, HashSet};
 use std::fmt::Display;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Lines};
-use std::iter::{Map, Peekable};
-use std::ops::{Add, AddAssign, Neg, Sub, SubAssign};
+use std::io::{self, BufRead};
 
 use bounds::Bounds;
 use position::Position;
@@ -110,7 +108,7 @@ pub struct City {
 impl Display for City {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut out: Vec<u8> = vec![b'.'; self.height * self.width];
-        for (f, antenna) in &self.antennas {
+        for (_f, antenna) in &self.antennas {
             antenna.write_into(out.as_mut(), self.width as isize);
         }
         for pos in self.get_all_antinodes(f.alternate()) {
@@ -134,7 +132,7 @@ impl City {
 
     pub fn get_all_antinodes(&self, part2: bool) -> HashSet<Position> {
         let mut combined: HashSet<Position> = HashSet::new();
-        for (freq, antenna_set) in &self.antennas {
+        for (_freq, antenna_set) in &self.antennas {
             let bounds = part2.then(|| {
                 Bounds::new(
                     Position::new(0, 0),
