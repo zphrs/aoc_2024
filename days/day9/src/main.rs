@@ -2,7 +2,6 @@ use std::fmt::Display;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::num::{NonZeroUsize, ParseIntError};
-use std::ops::Index;
 use std::str::FromStr;
 
 #[repr(transparent)]
@@ -68,8 +67,8 @@ impl Disk {
     }
 
     pub fn compact(&mut self) {
-        let mut empty_ptr = Some(1usize);
-        let mut filled_ptr = Some(1usize);
+        let mut empty_ptr;
+        let mut filled_ptr;
         let mut iter = 0;
         loop {
             empty_ptr = self
@@ -127,10 +126,22 @@ impl Disk {
         None
     }
 
-    pub fn step_compact_without_fragmentation(
+    fn step_compact_without_fragmentation(
         &mut self,
         start_at: usize,
     ) -> Option<usize> {
+        fn mwhile(
+            current_file_id: FileId,
+            input: (usize, &Option<FileId>),
+        ) -> Option<(usize, FileId)> {
+            let (ind, id) = input;
+            if let Some(id) = id {
+                if current_file_id != *id {
+                    return None;
+                }
+            }
+            (*id).map(|id| (ind, id))
+        }
         self.current_file_id = self.current_file_id.prev_id();
         let contig_file: Vec<_> = self
             .blocks
@@ -138,21 +149,8 @@ impl Disk {
             .enumerate()
             .rev()
             .skip(self.blocks.len() - start_at)
-            .skip_while(|(_, id)| {
-                if let Some(id) = id {
-                    self.current_file_id != *id
-                } else {
-                    true
-                }
-            })
-            .map_while(|(ind, id)| {
-                if let Some(id) = id {
-                    if self.current_file_id != *id {
-                        return None;
-                    }
-                }
-                (*id).map(|id| (ind, id))
-            })
+            .skip_while(|input| mwhile(self.current_file_id, *input).is_none())
+            .map_while(|input| mwhile(self.current_file_id, input))
             .collect();
         // println!("{:?}", contig_file);
         let end_of_contig_file = contig_file[contig_file.len() - 1].0;
@@ -177,6 +175,7 @@ impl Disk {
 
     pub fn compact_without_fragmentation(&mut self) {
         // println!("{self}");
+        let id = self.current_file_id;
         let mut skip_to = self.blocks.len();
         while let Some(skip) = self.step_compact_without_fragmentation(skip_to)
         {
@@ -184,6 +183,7 @@ impl Disk {
             // println!("{self}\n");
             // break;
         }
+        self.current_file_id = id;
     }
 
     pub fn hash(&self) -> usize {
