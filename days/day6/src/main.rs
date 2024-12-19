@@ -37,7 +37,7 @@ pub fn part2_solution(
 ) -> impl Display {
     let mut board: Board = lines.collect();
     let mut guard: Guard = board.take_guard();
-    let e = guard.simulate(&mut board);
+    let _e = guard.simulate(&mut board);
     let (visited, mut reset) = guard.into();
     let original_pos = reset.pos();
     let mut loop_ct = 0;
