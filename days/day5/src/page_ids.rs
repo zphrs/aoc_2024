@@ -1,6 +1,4 @@
-use std::{fmt::Display, str::FromStr, string::ParseError};
-
-use anyhow::Error;
+use std::{fmt::Display, str::FromStr};
 
 use crate::{
     page_id::PageId,

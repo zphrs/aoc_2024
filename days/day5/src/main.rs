@@ -29,7 +29,7 @@ pub fn part1_solution(
             Ok(_) => {
                 total_middles += ids.middle_id();
             }
-            Err(e) => {
+            Err(_e) => {
                 continue;
             }
         }
@@ -55,7 +55,7 @@ pub fn part2_solution(
             Ok(_) => {
                 continue;
             }
-            Err(e) => {
+            Err(_) => {
                 let new_ids = PageIds::from_inner(
                     map.walk_graph(&ids.into_inner()).unwrap(),
                 );

@@ -1,11 +1,7 @@
-use std::{
-    collections::{HashMap, HashSet},
-    fmt::Display,
-};
+use std::{collections::HashSet, fmt::Display};
 
 use crate::{
-    direction::Direction, guard::Guard, obstacle::Obstacle, position::Position,
-    tile::Tile,
+    direction::Direction, guard::Guard, position::Position, tile::Tile,
 };
 
 pub struct Board {

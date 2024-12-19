@@ -250,9 +250,9 @@ impl Debug for CursorIterator<'_> {
     ) -> std::fmt::Result {
         #[derive(Debug)]
         struct Iter {
-            direction: Direction,
-            current: Cursor,
-            left: usize,
+            _direction: Direction,
+            _current: Cursor,
+            _left: usize,
         }
         let Self {
             direction,
@@ -264,9 +264,9 @@ impl Debug for CursorIterator<'_> {
         // per Chayim Friedman’s suggestion
         Debug::fmt(
             &Iter {
-                direction: *direction,
-                current: *current,
-                left: *left,
+                _direction: *direction,
+                _current: *current,
+                _left: *left,
             },
             f,
         )

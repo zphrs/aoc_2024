@@ -1,7 +1,6 @@
 mod board;
 mod direction;
 mod guard;
-mod obstacle;
 mod position;
 mod tile;
 

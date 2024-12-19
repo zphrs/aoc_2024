@@ -5,7 +5,7 @@ use std::{
     str::FromStr,
 };
 
-use anyhow::{anyhow, Error};
+use anyhow::anyhow;
 use lazy_static::lazy_static;
 
 use crate::page_id::PageId;
@@ -51,7 +51,7 @@ impl PartialOrd for Rules {
 pub enum RuleError {
     ShouldBeBefore(PageId, PageId),
     ShouldBeAfter(PageId, PageId),
-    Cycle(Vec<PageId>),
+    _Cycle(Vec<PageId>),
 }
 
 impl std::error::Error for RuleError {}
@@ -73,7 +73,7 @@ impl Display for RuleError {
                     id, after
                 )?;
             }
-            RuleError::Cycle(ids) => {
+            RuleError::_Cycle(ids) => {
                 write!(f, "Cycle detected while ordering ids: ")?;
                 let strs: Vec<String> =
                     ids.iter().map(|id| format!("{}", id)).collect();
@@ -95,7 +95,7 @@ impl Display for Rules {
 }
 
 impl Rules {
-    pub fn new(id: PageId) -> Self {
+    pub fn _new(id: PageId) -> Self {
         Self {
             id,
             should_be_before: Default::default(),
@@ -133,16 +133,6 @@ impl Rules {
 
     pub fn has_befores(&self) -> bool {
         !self.should_be_before.is_empty()
-    }
-
-    pub fn has_after(&self, id: PageId) -> bool {
-        self.should_be_after.contains(&id)
-    }
-
-    pub fn filter_afters(&self, ids: &[PageId]) -> Vec<PageId> {
-        ids.iter()
-            .filter_map(|id| self.should_be_after.contains(id).then(|| *id))
-            .collect()
     }
 
     pub fn intersection_with_afters<'a, 'b>(

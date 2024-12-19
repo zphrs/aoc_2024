@@ -1,5 +1,4 @@
 use std::{
-    boxed,
     collections::HashMap,
     env,
     fs::File,
@@ -17,7 +16,7 @@ fn p1(mut left: Vec<u32>, mut right: Vec<u32>) -> u32 {
     sum
 }
 
-fn p2(mut left: Vec<u32>, mut right: Vec<u32>) -> u32 {
+fn p2(mut left: Vec<u32>, right: Vec<u32>) -> u32 {
     let r_buckets: HashMap<u32, u32> =
         right
             .into_iter()
